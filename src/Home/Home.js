@@ -43,7 +43,7 @@ function Home() {
 
   return (
     <div>
-      <h1>Market Watch App</h1>
+      <h1>Crypto Tracker</h1>
       <input
         type="text"
         value={symbolInput}
