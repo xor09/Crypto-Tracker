@@ -10,6 +10,17 @@ const simulateRealTimeUpdate = (symbol) => ({
 });
 
 
+const subscribeToSymbol = (symbolInput, setMarketWatchList, setSymbolInput, marketWatchList) => {
+  const symbol = symbolInput.trim().toUpperCase();
+  //check if symbol is already subscribed
+  if (marketWatchList.some((item) => item.s === symbol)) {
+    window.alert(`${symbol} is already subscribed.`);
+    return;
+  }
+  setMarketWatchList((prevList) => [...prevList, simulateRealTimeUpdate(symbol)]);
+  setSymbolInput("");
+};
+
 
 function Home() {
   const [symbolInput, setSymbolInput] = useState("");
@@ -28,19 +39,6 @@ function Home() {
     };
   }, []);
 
-  const subscribeToSymbol = () => {
-    const symbol = symbolInput.trim().toUpperCase();
-
-    // Add the subscribed symbol as an object to the market watch list
-    setMarketWatchList((prevList) => [
-      ...prevList,
-      simulateRealTimeUpdate(symbol),
-    ]);
-
-    // Clear input field
-    setSymbolInput("");
-  };
-
   return (
     <div>
       <h1>Crypto Tracker</h1>
@@ -50,15 +48,26 @@ function Home() {
         onChange={(e) => setSymbolInput(e.target.value)}
         placeholder="Enter symbol"
       />
-      <button onClick={subscribeToSymbol}>Subscribe</button>
+      <button onClick={() => subscribeToSymbol(symbolInput, setMarketWatchList, setSymbolInput, marketWatchList)}>Subscribe</button>
 
-      <div>
-        {marketWatchList.map((data) => (
-          <div
-            key={data.s}
-          >{`${data.s}: Bid - ${data.b}, Ask - ${data.a}`}</div>
-        ))}
-      </div>
+       <table>
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Bid</th>
+            <th>Ask</th>
+          </tr>
+        </thead>
+        <tbody>
+          {marketWatchList.map((data) => (
+            <tr key={data.s}>
+              <td>{data.s}</td>
+              <td>{data.b}</td>
+              <td>{data.a}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
