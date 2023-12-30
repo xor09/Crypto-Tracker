@@ -12,6 +12,10 @@ const simulateRealTimeUpdate = (symbolObj) => ({
 
 const subscribeToSymbol = (symbolInput, setMarketWatchList, setSymbolInput, marketWatchList) => {
   const symbol = symbolInput.trim().toUpperCase();
+  if(symbol.length === 0){
+    window.alert(`Enter a valid Symbol`);
+    return;
+  }
   //check if symbol is already subscribed
   if (marketWatchList.some((item) => item.s === symbol)) {
     window.alert(`${symbol} is already subscribed.`);
